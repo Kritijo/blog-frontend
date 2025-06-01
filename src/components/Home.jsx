@@ -30,6 +30,12 @@ const Home = () => {
                 </p>
             )}
 
+            {data && !data.posts.length > 0 && (
+                <p className="font-semibold font-mono text-center mt-20">
+                    "No posts yet."
+                </p>
+            )}
+
             {data && (
                 <section className="grid gap-8 md:grid-cols-3">
                     {data.posts.map((post, index) => (
