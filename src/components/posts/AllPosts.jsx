@@ -10,7 +10,6 @@ const Posts = () => {
     return (
         <>
             <AllPosts />
-            {isAuthenticated && <UserPosts />}
         </>
     );
 };
@@ -36,52 +35,17 @@ const Buttons = ({ setPage, totalPages, page }) => {
     );
 };
 
-const UserPosts = () => {
-    const [page, setPage] = useState(1);
-    const limit = 6;
-    const { data, loading, error } = useFetch(
-        `blog?skip=${(page - 1) * limit}&limit=${limit}`
-    );
-    const totalPages = data?.total ? Math.ceil(data.total / limit) : 1;
-
-    return (
-        <>
-            <Format
-                heading={"Your Posts"}
-                loading={loading}
-                error={error}
-                data={data?.userPosts}
-            />
-            <Buttons setPage={setPage} page={page} totalPages={totalPages} />
-        </>
-    );
-};
-
 const AllPosts = () => {
     const [page, setPage] = useState(1);
-    const limit = 4;
+    const limit = 8;
     const { data, loading, error } = useFetch(
         `home/blog?skip=${(page - 1) * limit}&limit=${limit}`
     );
     const totalPages = Math.ceil(data?.total / limit);
     return (
         <>
-            <Format
-                heading={"All Posts"}
-                loading={loading}
-                error={error}
-                data={data?.posts}
-            />
-            <Buttons setPage={setPage} page={page} totalPages={totalPages} />
-        </>
-    );
-};
-
-const Format = ({ heading, loading, error, data }) => {
-    return (
-        <>
             <h2 className="text-2xl text-center font-bold mb-6 underline">
-                {heading}
+                All Posts
             </h2>
 
             {loading && (
@@ -102,17 +66,20 @@ const Format = ({ heading, loading, error, data }) => {
                 </p>
             )}
 
-            {data && data.length > 0 ? (
-                <section className="grid gap-8 md:grid-cols-3">
-                    {data.map((post, index) => (
-                        <PostCard post={post} key={index} index={index} />
-                    ))}
-                </section>
-            ) : (
-                <p className="font-semibold font-mono text-center my-20">
+            {data && !data.posts.length > 0 && (
+                <p className="font-semibold font-mono text-center mt-20">
                     No posts yet.
                 </p>
             )}
+
+            {data && (
+                <section className="grid gap-8 md:grid-cols-3">
+                    {data.posts.map((post, index) => (
+                        <PostCard post={post} key={index} index={index} />
+                    ))}
+                </section>
+            )}
+            <Buttons setPage={setPage} page={page} totalPages={totalPages} />
         </>
     );
 };

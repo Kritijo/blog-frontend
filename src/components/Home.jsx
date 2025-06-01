@@ -5,7 +5,7 @@ import { Typewriter } from "react-simple-typewriter";
 import { Link } from "react-router-dom";
 
 const Home = () => {
-    const { data, loading, error } = useFetch("home/blog?limit=6");
+    const { data, loading, error } = useFetch("home/blog?limit=3");
     return (
         <>
             <Hero />
@@ -32,7 +32,7 @@ const Home = () => {
 
             {data && !data.posts.length > 0 && (
                 <p className="font-semibold font-mono text-center mt-20">
-                    "No posts yet."
+                    No posts yet.
                 </p>
             )}
 
