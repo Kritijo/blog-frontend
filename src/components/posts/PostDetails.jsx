@@ -83,7 +83,7 @@ const PostDetails = () => {
 
             <p className="text-lg text-gray-600">
                 <i>
-                    By{" "}
+                    – By{" "}
                     <span className="font-semibold">
                         {post.author?.name || "Unknown"}
                     </span>
