@@ -81,6 +81,15 @@ const PostDetails = () => {
                 )}
             </div>
 
+            <p className="text-lg text-gray-600">
+                <i>
+                    By{" "}
+                    <span className="font-semibold">
+                        {post.author?.name || "Unknown"}
+                    </span>
+                </i>
+            </p>
+
             <p className="text-sm text-gray-500 mb-8">
                 {new Date(post.createdAt).toLocaleDateString("en-US", {
                     year: "numeric",
