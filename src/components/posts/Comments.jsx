@@ -4,7 +4,7 @@ import { toast } from "sonner";
 
 const Comments = ({ user, post }) => {
     const [comments, setComments] = useState([]);
-    const [name, setName] = useState(user.name || "");
+    const [name, setName] = useState(user?.name || "");
     const [message, setMessage] = useState("");
     const id = parseInt(post.id);
 
