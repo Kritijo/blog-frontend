@@ -38,7 +38,7 @@ const PostEditor = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await api.put(`/v1/blog/${id}`, {
+            await api.put(`blog/${id}`, {
                 title,
                 content,
             });
