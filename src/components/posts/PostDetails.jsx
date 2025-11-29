@@ -60,12 +60,13 @@ const PostDetails = () => {
 
   return (
     <div>
-      <div className="w-full h-[25vh]">
-        <img
-          className="h-full w-full object-cover"
-          src="https://plus.unsplash.com/premium_photo-1720744786849-a7412d24ffbf?q=80&w=2218&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-        />
-      </div>
+      {post.thumbnail ? (
+        <div className="w-full h-[25vh]">
+          <img className="h-full w-full object-cover" src={post.thumbnail} />
+        </div>
+      ) : (
+        <></>
+      )}
       <div className="max-w-3xl mx-auto px-4 py-10">
         <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-4 gap-4">
           <h1 className="text-4xl font-bold text-gray-800">{post.title}</h1>

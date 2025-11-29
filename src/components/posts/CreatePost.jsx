@@ -2,26 +2,23 @@ import { useState } from "react";
 import api from "../utils/axios";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import Thumbnail from "./Thumbnail";
+import Thumbnail from "../unsplash/Thumbnail";
 
 const autoResize = (el) => {
-  el.style.height = "auto"; // allow shrink
-  el.style.height = el.scrollHeight + "px"; // fit content
+  el.style.height = "auto";
+  el.style.height = el.scrollHeight + "px";
 };
 
 const CreatePost = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const navigate = useNavigate();
-  const [thumbnail, setThumbnail] = useState(
-    "https://plus.unsplash.com/premium_photo-1720744786849-a7412d24ffbf?q=80&w=2218&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-  );
-  const [showUnsplashPicker, setShowUnsplashPicker] = useState(false);
+  const [thumbnail, setThumbnail] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await api.post("blog", { title, content });
+      await api.post("blog", { title, content, thumbnail });
       toast.success("Post created!");
       navigate("/");
     } catch (err) {
@@ -32,7 +29,7 @@ const CreatePost = () => {
 
   return (
     <div className="">
-      <Thumbnail thumbnail={thumbnail} />
+      <Thumbnail thumbnail={thumbnail} setThumbnail={setThumbnail} />
       <form
         onSubmit={handleSubmit}
         className="max-w-3xl mx-auto px-4 py-10 flex flex-col gap-6"

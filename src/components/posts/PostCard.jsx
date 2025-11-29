@@ -19,9 +19,25 @@ const PostCard = ({ post, index }) => {
         aria-label={`Read post: ${post.title}`}
         className="flex flex-col flex-1"
       >
-        <div className="w-full bg-purple-50 mb-[20px] object-contain">
-          <img src="https://plus.unsplash.com/premium_photo-1720744786849-a7412d24ffbf?q=80&w=2218&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" />
+        <div className="w-full h-48 mb-5 overflow-hidden bg-purple-50">
+          {post.thumbnail ? (
+            <img
+              src={post.thumbnail}
+              alt=""
+              className="w-full h-full object-cover"
+            />
+          ) : (
+            <div
+              style={{
+                backgroundImage: "url('/assets/postcard.svg')",
+                backgroundRepeat: "no-repeat",
+                backgroundSize: "400px 200px",
+              }}
+              className="w-full h-full"
+            ></div>
+          )}
         </div>
+
         <h3 className="text-xl font-semibold mb-2 hover:text-purple-900 transition-colors duration-300">
           {post.title}
         </h3>
