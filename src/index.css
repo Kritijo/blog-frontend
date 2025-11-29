@@ -3,15 +3,30 @@
 @tailwind utilities;
 
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
   color: #213547;
-  background-color: rgb(245, 245, 245);
+  background-color: rgb(255, 255, 255);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.ql-editor {
+  font-size: 18px; 
+  line-height: 1.6;
+  min-height: 10vh;
+}
+.ql-container.ql-snow {
+  border: none !important;
+  background: transparent !important;
+  padding: 0;
+}
+.ql-toolbar.ql-snow {
+  border:none !important;
+  border-bottom: 2px solid rgb(204, 177, 204) !important;
+  background-color: rgb(250, 247, 251);
 }

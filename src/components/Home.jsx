@@ -5,52 +5,47 @@ import { Typewriter } from "react-simple-typewriter";
 import { Link } from "react-router-dom";
 
 const Home = () => {
-    const { data, loading, error } = useFetch("home/blog?limit=3");
-    return (
-        <>
-            <Hero />
+  const { data, loading, error } = useFetch("home/blog?limit=6");
+  const baseFont = "font-semibold font-mono text-center";
+  return (
+    <>
+      <Hero />
 
-            <h2 className="text-2xl font-bold mb-6 underline">Latest Posts</h2>
+      {loading && (
+        <p className={baseFont}>
+          Loading
+          <Typewriter
+            words={["..."]}
+            loop={0}
+            cursor
+            cursorStyle=""
+            typeSpeed={100}
+          />
+        </p>
+      )}
+      {error && <p className={baseFont}>{error}</p>}
 
-            {loading && (
-                <p className="font-semibold font-mono text-center mt-20">
-                    Loading
-                    <Typewriter
-                        words={["..."]}
-                        loop={0}
-                        cursor
-                        cursorStyle=""
-                        typeSpeed={100}
-                    />
-                </p>
-            )}
-            {error && (
-                <p className="font-semibold font-mono text-center mt-20">
-                    {error}
-                </p>
-            )}
+      {data && !data.posts.length > 0 && (
+        <p className={baseFont}>No posts yet.</p>
+      )}
 
-            {data && !data.posts.length > 0 && (
-                <p className="font-semibold font-mono text-center mt-20">
-                    No posts yet.
-                </p>
-            )}
+      {data && (
+        <section className="relative mx-5 md:mx-[20vh] grid gap-8 grid-cols-[repeat(auto-fit,minmax(250px,1fr))]">
+          {data.posts.map((post, index) => (
+            <PostCard post={post} key={index} index={index} />
+          ))}
+        </section>
+      )}
 
-            {data && (
-                <section className="grid gap-8 md:grid-cols-3">
-                    {data.posts.map((post, index) => (
-                        <PostCard post={post} key={index} index={index} />
-                    ))}
-                </section>
-            )}
-
-            <Link to="/posts" className="flex justify-center">
-                <button className="px-4 md:px-6 py-2 md:text-lg mt-10 bg-gradient-to-r from-blue-600 to-blue-400 text-white font-semibold rounded-xl shadow-md hover:scale-105 hover:shadow-lg transition-transform duration-300 ease-in-out">
-                    All Posts →
-                </button>
-            </Link>
-        </>
-    );
+      <div className="flex justify-center my-10">
+        <Link to="/posts">
+          <button className="px-4 md:px-6 py-2 md:text-lg bg-purple-200 text-purple-600 font-semibold rounded-xl shadow-md hover:scale-105 hover:shadow-lg transition-transform duration-300 ease-in-out">
+            All Posts →
+          </button>
+        </Link>
+      </div>
+    </>
+  );
 };
 
 export default Home;

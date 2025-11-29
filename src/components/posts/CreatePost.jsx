@@ -2,56 +2,73 @@ import { useState } from "react";
 import api from "../utils/axios";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import Thumbnail from "./Thumbnail";
+
+const autoResize = (el) => {
+  el.style.height = "auto"; // allow shrink
+  el.style.height = el.scrollHeight + "px"; // fit content
+};
 
 const CreatePost = () => {
-    const [title, setTitle] = useState("");
-    const [content, setContent] = useState("");
-    const navigate = useNavigate();
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+  const navigate = useNavigate();
+  const [thumbnail, setThumbnail] = useState(
+    "https://plus.unsplash.com/premium_photo-1720744786849-a7412d24ffbf?q=80&w=2218&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+  );
+  const [showUnsplashPicker, setShowUnsplashPicker] = useState(false);
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        try {
-            await api.post("blog", { title, content });
-            toast.success("Post created!");
-            navigate("/posts");
-        } catch (err) {
-            toast.error("Failed to create post.");
-            console.error("Failed to create post", err);
-        }
-    };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await api.post("blog", { title, content });
+      toast.success("Post created!");
+      navigate("/");
+    } catch (err) {
+      toast.error("Failed to create post.");
+      console.error("Failed to create post", err);
+    }
+  };
 
-    return (
-        <div className="max-w-4xl mx-auto px-4 py-10">
-            <form
-                onSubmit={handleSubmit}
-                className="min-h-screen flex flex-col gap-6"
-            >
-                <input
-                    type="text"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                    placeholder="Your blog title..."
-                    className="w-full text-2xl md:text-3xl font-bold bg-transparent focus:outline-none placeholder-gray-400"
-                    required
-                />
+  return (
+    <div className="">
+      <Thumbnail thumbnail={thumbnail} />
+      <form
+        onSubmit={handleSubmit}
+        className="max-w-3xl mx-auto px-4 py-10 flex flex-col gap-6"
+      >
+        <textarea
+          type="text"
+          id="text"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          placeholder="Your blog title..."
+          className="text-4xl font-bold bg-transparent focus:outline-none resize-none
+         placeholder-gray-400 overflow-scroll overflow-x-auto overflow-y-hidden"
+          maxLength="80"
+          required
+        />
 
-                <textarea
-                    value={content}
-                    onChange={(e) => setContent(e.target.value)}
-                    placeholder="Start writing your thoughts here..."
-                    className="w-full flex-1 bg-transparent resize-none text-lg focus:outline-none placeholder-gray-500 leading-relaxed whitespace-pre-wrap"
-                    required
-                />
+        <textarea
+          value={content}
+          onChange={(e) => {
+            setContent(e.target.value);
+            autoResize(e.target);
+          }}
+          placeholder="Start writing your thoughts here..."
+          className="w-full bg-transparent resize-none text-lg focus:outline-none placeholder-gray-500 leading-relaxed whitespace-pre-wrap overflow-scroll overflow-x-auto overflow-y-hidden"
+          required
+        />
 
-                <button
-                    type="submit"
-                    className="self-end bg-blue-600 text-white font-serif px-6 py-2 rounded-lg hover:bg-blue-700 transition"
-                >
-                    Publish
-                </button>
-            </form>
-        </div>
-    );
+        <button
+          type="submit"
+          className="self-end bg-purple-600 text-white font-medium px-6 py-2 rounded-lg hover:bg-purple-700 transition"
+        >
+          Publish
+        </button>
+      </form>
+    </div>
+  );
 };
 
 export default CreatePost;
