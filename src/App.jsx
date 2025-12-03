@@ -8,6 +8,7 @@ import { Toaster } from "sonner";
 function App() {
   return (
     <>
+      <Toaster position="top-right" richColors closeButton/>
       <ScrollToTop />
       <AuthProvider>
         <NavBar />
@@ -16,7 +17,6 @@ function App() {
         </main>
       </AuthProvider>
       <Footer />
-      <Toaster position="top-right" richColors />
     </>
   );
 }
