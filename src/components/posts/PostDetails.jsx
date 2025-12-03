@@ -102,7 +102,7 @@ const PostDetails = () => {
             day: "2-digit",
           })}
         </p>
-        <article className="prose whitespace-pre-line prose-lg text-lg max-w-none text-gray-800">
+        <article className="prose prose-lg text-lg max-w-none text-gray-800 space-y-5">
           <ReactMarkdown rehypePlugins={[rehypeHighlight]}>
             {post.content}
           </ReactMarkdown>

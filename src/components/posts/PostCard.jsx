@@ -1,10 +1,12 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import { Link } from "react-router-dom";
+import removeMarkdown from "remove-markdown";
 
 const PostCard = ({ post, index }) => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, amount: 0.2 });
+  const preview = removeMarkdown(post.content).slice(0, 120);
 
   return (
     <motion.article
@@ -41,7 +43,7 @@ const PostCard = ({ post, index }) => {
         <h3 className="text-xl font-semibold mb-2 hover:text-purple-900 transition-colors duration-300">
           {post.title}
         </h3>
-        <p className="text-gray-700 mb-4 flex-1 line-clamp-3">{post.content}</p>
+        <p className="text-gray-700 mb-4 flex-1 line-clamp-3">{preview}</p>
         <time className="text-sm text-gray-500">
           {new Date(post.createdAt).toLocaleDateString("en-US", {
             month: "long",

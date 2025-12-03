@@ -1,6 +1,5 @@
 import PostCard from "./PostCard.jsx";
-import api from "../utils/axios.js";
-import { useQuery } from "@tanstack/react-query";
+import useFetch from "../utils/useFetch.jsx";
 import { Typewriter } from "react-simple-typewriter";
 import { useState } from "react";
 
@@ -8,16 +7,9 @@ const Posts = () => {
   const [page, setPage] = useState(1);
   const limit = 8;
 
-  const { data, isLoading, error } = useQuery({
-    queryKey: ["all-posts"],
-    queryFn: async () => {
-      const res = await api.get(
-        `home/blog?skip=${(page - 1) * limit}&limit=${limit}`
-      );
-      return res.data;
-    },
-    refetchOnWindowFocus: false,
-  });
+  const { data, isLoading, error } = useFetch(
+    `home/blog?skip=${(page - 1) * limit}&limit=${limit}`
+  );
 
   const totalPages = Math.ceil(data?.total / limit);
 
