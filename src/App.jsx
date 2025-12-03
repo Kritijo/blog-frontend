@@ -5,18 +5,24 @@ import ScrollToTop from "./components/utils/ScrollToTop.jsx";
 import { AuthProvider } from "./components/contexts/AuthContext.jsx";
 import { Toaster } from "sonner";
 
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
+
 function App() {
   return (
     <>
-      <Toaster position="top-right" richColors closeButton/>
-      <ScrollToTop />
-      <AuthProvider>
-        <NavBar />
-        <main className="min-h-screen overflow-x-hidden">
-          <Outlet />
-        </main>
-      </AuthProvider>
-      <Footer />
+      <QueryClientProvider client={queryClient}>
+        <Toaster position="top-right" richColors closeButton />
+        <ScrollToTop />
+        <AuthProvider>
+          <NavBar />
+          <main className="min-h-screen overflow-x-hidden">
+            <Outlet />
+          </main>
+        </AuthProvider>
+        <Footer />
+      </QueryClientProvider>
     </>
   );
 }

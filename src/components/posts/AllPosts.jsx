@@ -1,38 +1,24 @@
 import PostCard from "./PostCard.jsx";
-import useFetch from "../utils/useFetch.jsx";
+import api from "../utils/axios.js";
+import { useQuery } from "@tanstack/react-query";
 import { Typewriter } from "react-simple-typewriter";
 import { useState } from "react";
-
-const Buttons = ({ setPage, totalPages, page }) => {
-  const buttonStyle =
-    "px-4 py-2 bg-purple-300 font-semibold rounded hover:bg-purple-200 disabled:bg-gray-100 disabled:opacity-50";
-
-  return (
-    <div className="flex justify-center mt-8 gap-4 mb-10">
-      <button
-        onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
-        disabled={page === 1}
-        className={buttonStyle}
-      >
-        Previous
-      </button>
-      <button
-        onClick={() => setPage((prev) => prev + 1)}
-        disabled={page === totalPages}
-        className={buttonStyle}
-      >
-        Next
-      </button>
-    </div>
-  );
-};
 
 const Posts = () => {
   const [page, setPage] = useState(1);
   const limit = 8;
-  const { data, loading, error } = useFetch(
-    `home/blog?skip=${(page - 1) * limit}&limit=${limit}`
-  );
+
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["all-posts"],
+    queryFn: async () => {
+      const res = await api.get(
+        `home/blog?skip=${(page - 1) * limit}&limit=${limit}`
+      );
+      return res.data;
+    },
+    refetchOnWindowFocus: false,
+  });
+
   const totalPages = Math.ceil(data?.total / limit);
 
   return (
@@ -47,7 +33,7 @@ const Posts = () => {
         All Posts
       </h2>
 
-      {loading && (
+      {isLoading && (
         <p className="font-semibold font-mono text-center mt-20">
           Loading
           <Typewriter
@@ -77,6 +63,30 @@ const Posts = () => {
         </section>
       )}
       <Buttons setPage={setPage} page={page} totalPages={totalPages} />
+    </div>
+  );
+};
+
+const Buttons = ({ setPage, totalPages, page }) => {
+  const buttonStyle =
+    "px-4 py-2 bg-purple-300 font-semibold rounded hover:bg-purple-200 disabled:bg-gray-100 disabled:opacity-50";
+
+  return (
+    <div className="flex justify-center mt-8 gap-4 mb-10">
+      <button
+        onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
+        disabled={page === 1}
+        className={buttonStyle}
+      >
+        Previous
+      </button>
+      <button
+        onClick={() => setPage((prev) => prev + 1)}
+        disabled={page === totalPages}
+        className={buttonStyle}
+      >
+        Next
+      </button>
     </div>
   );
 };

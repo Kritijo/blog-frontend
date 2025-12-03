@@ -1,17 +1,27 @@
 import Hero from "./Hero.jsx";
 import PostCard from "./posts/PostCard";
-import useFetch from "./utils/useFetch.jsx";
+import api from "./utils/axios";
+import { useQuery } from "@tanstack/react-query";
 import { Typewriter } from "react-simple-typewriter";
 import { Link } from "react-router-dom";
 
 const Home = () => {
-  const { data, loading, error } = useFetch("home/blog?limit=6");
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["home-posts"],
+    queryFn: async () => {
+      const res = await api.get("home/blog?limit=6");
+      return res.data;
+    },
+    refetchOnWindowFocus: false,
+  });
+
   const baseFont = "font-semibold font-mono text-center";
+
   return (
     <>
       <Hero />
 
-      {loading && (
+      {isLoading && (
         <p className={baseFont}>
           Loading
           <Typewriter
@@ -23,9 +33,10 @@ const Home = () => {
           />
         </p>
       )}
-      {error && <p className={baseFont}>{error}</p>}
 
-      {data && !data.posts.length > 0 && (
+      {error && <p className={baseFont}>Failed to load posts.</p>}
+
+      {data && data.posts.length === 0 && (
         <p className={baseFont}>No posts yet.</p>
       )}
 

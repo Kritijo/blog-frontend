@@ -21,7 +21,7 @@ const Hero = () => {
           <h1 className={`${headingStyle}`}>
             <Typewriter
               key={isAuthenticated ? "logged-in" : "logged-out"}
-              words={isAuthenticated ? [`Hi ${user.name}`] : ["Inkling Echo"]}
+              words={isAuthenticated ? [`Hi, ${user.name}`] : ["Inkling Echo"]}
               loop={1}
               cursor
               cursorStyle=""
